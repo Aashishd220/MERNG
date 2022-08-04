@@ -38,12 +38,10 @@ module.exports={
 
         },
        async register(_,{registerInput:{username,email,password,confirmPassword}}){
-            //TODO:validate user data
             const {valid,errors}=validateRegisterInput(username,email,password,confirmPassword)
             if(!valid){
                 throw new UserInputError('Errors',{errors:errors});
             }
-            //TODO: make sure user doesn't already exist
             const user=await User.findOne({username});
             if(user){
                 throw new UserInputError('Username is taken',{
@@ -52,7 +50,6 @@ module.exports={
                     }
                 }) 
             }
-            //
             password=await bcryptjs.hash(password,12);
 
             const newUser=new User({
